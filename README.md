@@ -1,4 +1,4 @@
-# apiPointAndHistoryExample
+# API Point and History Example
 Provides a framework for developing your interface to KMC Controls Commander API
 
 Getting Started
@@ -8,8 +8,11 @@ This document introduces the available REST API for accessing your data in the c
 Introduction
 
 Documentation
-All of this documentaino is available at http://
+
+All of this documentation is available at http://
+
 Tags
+
 All entities in the cloud database are tagged with Haystack tags.    
 Standard tags compiled by the Haystack community are at http://project-haystack.org and there is other documentation there.
 
@@ -22,20 +25,20 @@ dicovered on the network.
 // Query the Database
 
 
-We can filter the search by looking for a particular name and search on the ‘dis’ tag:
+We can filter the search by looking for a particular name such as the ‘dis’ tag:
   
 //Examples
 
 •	Get device list
 
-•	Find particular device(s) that match criteria, such as those marked as VAVs or are meters
+•	Find particular device(s) that match criteria, such as those marked as vav or meter
 
 Read all vav
 		Returns a list of all devices with a vav tag.
 
 Read all meters
 		Returns a list of devices with a meter tag.
-		Query for unit
+		Query by unit of measure
 			Returns a list of points with kWh unit of measure.
 
 Read all Schedules
