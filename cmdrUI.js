@@ -32,7 +32,7 @@ $(document).ready(function(){
   });
 
   $('#navbar-subtitle-host').text('Host: '+host);
-  $('#navbar-subtitle-project').text('Project: '+project);
+  $('#navbar-subtitle-project').text('Project: '+projectName);
   $('#watch-subscribe').click(function(){
     runObjectQuery();
     $('#last-update').text('Lease Expires at '+ addMilliseconds(new Date(),leaseTimeMs).toLocaleTimeString());

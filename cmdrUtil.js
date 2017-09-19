@@ -7,11 +7,8 @@ function queryTerm(term, cb, accept, host, pname){
     "Content-Type": "text/plain; charset=utf-8"
   };
   if(host)
-  //  headers.Cookie = Cookie;
+   headers.Cookie = Cookie;
    var data = 'ver:"2.0"\n'
-  //   'expr\n'+
-  //   '"'+expr.replace(/"/g,'\\\"')+'"';
-    //console.log(h+'/api/'+(pname?pname:project)+'/evalAll');
   $.ajax({
     type: 'GET',
     url: h+'/api/objects?q='+encodeURIComponent(term)+'&a=true',
@@ -60,58 +57,52 @@ function pointWrite(expr, cb, accept, host, pname){
 }
 
 
-
-
 var Cookie;
 var Connected = false;
 var autoUpdate=false;
+var projectId='';
 
 function login(username,password){
- // get the userSalt and nonce from /auth/CloudProjectName/api?username
-      var headers = {          
-        Accept: "application/json; charset=utf-8",         
-        "Content-Type": "text/plain; charset=utf-8"
-      };
-    if(host)
-        headers.Cookie = Cookie;
+    $('#cloud-modal-login').attr('disabled', 'true');
     $.ajax({
-      type: 'GET',
-      url: host+'/auth/'+project+'/api?'+username,
-      headers: headers,
+      type: 'POST',
+      url: 'https://projects.kmccontrols.com/loginAJAX',
+      data: {
+        email: username,
+        password: password
+      },
       xhrFields: {
         withCredentials: true
       },
       success: function(data){
-        var rows = data.split('\n');
-        var userSalt = rows[1].split(':')[1];
-        var nonce = rows[3].split(':')[1];
-        var shaObj = new jsSHA('SHA-1', "TEXT");
-        shaObj.setHMACKey(password, "TEXT");
-        shaObj.update(username+':'+userSalt);
-        var hmac = shaObj.getHMAC("B64");
-        var shaObj2 = new jsSHA('SHA-1', 'TEXT');
-        shaObj2.update(hmac+':'+nonce);
-        var hash = shaObj2.getHash('B64');
-        data = 'nonce:'+nonce+'\n'+'digest:'+hash;
-        $.ajax({
-          type: 'POST',
-          url: host+'/auth/'+project+'/api?'+username,
-          headers: headers,
-          xhrFields: {
-            withCredentials: true
-          },
-          data: data,
-          success: function(data){
-            Cookie = data.substring(data.indexOf(':')+1);
-            Connected = true;
-            location.reload();
-            loginSuccess();
-          }
+          $.ajax({
+            type: 'GET',
+            url: 'https://projects.kmccontrols.com/users/me/activelicenses',
+            xhrFields: {
+              withCredentials: true
+            },
+            success: function(data){
+              var projectKey='';
+              for(var i in data.data)
+                if (data.data[i].name==projectName){projectKey=data.data[i].cryptokey}
+              $.ajax({
+                type: 'POST',
+                url: host+'/setlicense/'+projectKey,
+                success: function(data){
+                  console.log(data);
+                  loginSuccess()
+                }
+              }).fail(function(data){
+                console.log(data);
+                loginFail();
+              });
+            }
         }).fail(function(){
            loginFail();
         });
       }
     });
+  $('#cloud-modal-login').attr('disabled', 'false');
 }
 function logout(){
     var headers = {
@@ -120,7 +111,7 @@ function logout(){
     };
     $.ajax({
       type: 'GET',
-      url: host+'/auth/'+project+'/logout',
+      url: host+'/logout',
       headers: headers,
       xhrFields: {
         withCredentials: true

@@ -31,7 +31,7 @@ function  runObjectQuery(cb){
         }
         $('#discover-data').html(html);
       }
-  }, 'text/zinc; charset=utf-8', host,project);
+  }, 'text/zinc; charset=utf-8', host,projectName);
 }
 
 
@@ -86,7 +86,7 @@ function  readAHistory(cb){
       if(cb){
         cb(err, energyUsage);
       }
-    }, 'text/plain', host,project);
+    }, 'text/plain', host,projectName);
 }
 
 var updateIntervalSeconds=0.1;
