@@ -3,9 +3,7 @@ Provides a framework for developing your interface to KMC Controls Commander API
 
 Getting Started
 
-
 This document introduces the available REST API for accessing your data in the cloud.
-Introduction
 
 Documentation
 
