@@ -16,6 +16,20 @@ Standard tags compiled by the Haystack community are at http://project-haystack.
 
 // logging in
 
+POST user email and password to the project server
+
+url: https://projects.kmccontrols.com/loginAJAX
+
+data:{email: userName@provider.com, password: password123}
+
+GET the licenses assigned to this user
+
+url: https://projects.kmccontrols.com/users/me/activelicenses
+
+Select the license that matches the desired project. Use the cryptokey to sign into the cloud project.
+
+	GET https://commander2.kmccontrols.com/setlicense/[cryptokey]
+
 Getting Data
 A Device is tagged as a 'device', so searching through the database for all entities with that tag will get you the list of devices
 dicovered on the network.  
