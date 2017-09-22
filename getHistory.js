@@ -9,13 +9,9 @@ var tempPower;
 function  runObjectQuery(cb){
   var usage=0;
   console.log('Running the command');
-    // sendExpr('parseSetpointActionsSetOR("testDWDoverride and temp","2017-07-21T14:56-7:00_15min_80.1°F")', function(err,data){
-    // sendExpr('readAll(unit=="kW")', function(err,data){
-    //sendExpr('pointWrite(@20af4829-cc1bca09,false,8,"daryl")', function(err,data){
-    //pointWrite('@20af4829-cc1bca09,true,3,"daryl"', function(err,data){  ---getting a parse error  
     var query=$('#user-query').val();
     queryTerm(query, function(err,data){  
-      if(!data){
+      if(data.substring(0,3)=='<ht'||data.substring(0,3)=='<!D'){
         showLogin();
       }else{
         var rows = data.results;
