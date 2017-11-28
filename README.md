@@ -1,4 +1,4 @@
-# API Point and Object Query Example Using JQuery and Bootstrap
+# API Login and Object Query Example Using JQuery and Bootstrap
 Provides a framework for developing your interface to KMC Controls Commander API
 
 Getting Started
