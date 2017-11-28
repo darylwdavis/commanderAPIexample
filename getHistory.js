@@ -5,13 +5,16 @@ var devices=[];
 var pollPointCount=0;
 var tempPower;
 
-
 function  runObjectQuery(cb){
   var usage=0;
   console.log('Running the command');
     var query=$('#user-query').val();
-    queryTerm(query, function(err,data){  
-      if(data.substring(0,3)=='<ht'||data.substring(0,3)=='<!D'){
+    queryTerm(query, function(err,data){
+      var testForLoginScreen=false;
+      if(typeof data=="string"){
+       testForLoginScreen = (data.substring(0,3)=='<ht'||data.substring(0,3)=='<!D');
+      }
+      if(testForLoginScreen){
         showLogin();
       }else{
         var rows = data.results;
@@ -27,7 +30,7 @@ function  runObjectQuery(cb){
         }
         $('#discover-data').html(html);
       }
-  }, 'text/zinc; charset=utf-8', host,projectName);
+  },'application/json; charset=utf-8', host,projectName);
 }
 
 

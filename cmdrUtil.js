@@ -1,21 +1,15 @@
 function queryTerm(term, cb, accept, host, pname){
-  var h = '';
-  if(host)
-    h = host;
   var headers = {          
     Accept: accept||"application/json; charset=utf-8",         
     "Content-Type": "text/plain; charset=utf-8"
   };
-  if(host)
-   headers.Cookie = Cookie;
-   var data = 'ver:"2.0"\n'
   $.ajax({
     type: 'GET',
-    url: h+'/api/objects?q='+encodeURIComponent(term)+'&a=true',
-    headers: headers,
     xhrFields: {
       withCredentials: true
     },
+    url: host+'/data/objects?q='+encodeURIComponent(term),
+    headers: headers,
     error: function(err){
       cb(err);
     },
@@ -25,39 +19,6 @@ function queryTerm(term, cb, accept, host, pname){
   });
 }
 
-
-function pointWrite(expr, cb, accept, host, pname){
-  var h = '';
-  if(host)
-    h = host;
-  var headers = {          
-    Accept: accept||"application/json; charset=utf-8",         
-    "Content-Type": "text/plain; charset=utf-8"
-  };
-  if(host)
-    headers.Cookie = Cookie;
-  var data = 'ver:"2.0"\n'+
-    'id,val,level,who\n'+
-    expr.replace(/"/g,'\\\"');
-  $.ajax({
-    type: 'POST',
-    url: h+'/api/'+(pname?pname:project)+'/pointWrite',
-    headers: headers,
-    data: data,
-    xhrFields: {
-      withCredentials: true
-    },
-    error: function(err){
-      cb(err);
-    },
-    success: function(data){
-      cb(null, data);
-    }
-  });
-}
-
-
-var Cookie;
 var Connected = false;
 var autoUpdate=false;
 var projectId='';
@@ -83,15 +44,21 @@ function login(username,password){
             },
             success: function(data){
               var projectKey='';
-              for(var i in data.data)
-                if (data.data[i].name==projectName){projectKey=data.data[i].cryptokey}
-              $.ajax({
-                type: 'POST',
-                url: host+'/setlicense/'+projectKey,
-                success: function(data){
-                  console.log(data);
-                  loginSuccess()
+              for(var i in data.data){
+                if (data.data[i].name==projectName){
+                  projectKey=data.data[i].cryptokey;
                 }
+              }
+              $.ajax({
+                type: 'GET',
+                url: host+'/setlicense/'+projectKey,
+                xhrFields: {
+                  withCredentials: true
+                },
+                success: function(res,status,xhr){
+                  var Cookie = xhr.getResponseHeader('Set-Cookie');
+                  loginSuccess()
+                },
               }).fail(function(data){
                 console.log(data);
                 loginFail();
@@ -101,6 +68,9 @@ function login(username,password){
            loginFail();
         });
       }
+    }).fail(function(data){
+        console.log(data);
+        loginFail();
     });
   $('#cloud-modal-login').attr('disabled', 'false');
 }

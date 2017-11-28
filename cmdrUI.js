@@ -15,6 +15,7 @@ function addMilliseconds(date, ms) {
     return new Date(date.getTime() + ms);
 }
 function showLogin(){
+  $('#loginModal').attr('disabled', 'false');
   return $('#loginModal').modal('show');
 }
 function loginFail(){
@@ -31,7 +32,7 @@ $(document).ready(function(){
           $('#cloud-host-password').val());
   });
 
-  $('#navbar-subtitle-host').text('Host: '+host);
+  $('#navbar-subtitle-host').text('Host: '+cloudHost);
   $('#navbar-subtitle-project').text('Project: '+projectName);
   $('#watch-subscribe').click(function(){
     runObjectQuery();
